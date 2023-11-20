@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
 project(seatbelt_x
-        # todo!
         VERSION 0.0.1
-        DESCRIPTION "a 2D game engine written in C++"
-        HOMEPAGE_URL "https://github.com/mgerhold/silly-sprites/"
+        DESCRIPTION "the definitive Backseat compiler"
+        HOMEPAGE_URL "https://github.com/mgerhold/backseat-x"
         LANGUAGES C CXX  # C is required by some of the dependencies
 )
 
