@@ -1,0 +1,22 @@
+{
+  "dependencies" : [ {
+    "name" : "utf8proc",
+    "version>=" : "2.7.0#1"
+  }, {
+    "name" : "tl-expected",
+    "version>=" : "1.1.0"
+  }, {
+    "name" : "tl-optional",
+    "version>=" : "2021-05-02"
+  }, {
+    "name" : "ctre",
+    "version>=" : "3.7.2"
+  }, {
+    "name" : "magic-enum",
+    "version>=" : "0.9.3"
+  }, {
+    "name" : "ms-gsl",
+    "version>=" : "4.0.0"
+  } ],
+  "builtin-baseline" : "4a600e9fea71bd7872080cbb716797e04d30e6d3"
+}
