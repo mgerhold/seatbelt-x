@@ -8,11 +8,12 @@ add_library(seatbelt
         types.hpp
         lexer.hpp
         lexer.cpp
-        error_codes.hpp
         tokens.hpp
         source_location.hpp
         utils.hpp
         utils.cpp
+        lexer_error.hpp
+        ostream_formatter.hpp
 )
 
 target_link_libraries(seatbelt PRIVATE project_options)

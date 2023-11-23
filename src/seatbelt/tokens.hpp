@@ -70,6 +70,8 @@ enum class TokenType {
     ValueSize,
     While,
     Xor,
+    Print,
+    Println,
 };
 
 struct Token {

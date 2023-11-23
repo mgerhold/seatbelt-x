@@ -1,4 +1,8 @@
 #include "lexer.hpp"
+
+
+#include "lexer_error.hpp"
+
 #include <algorithm>
 #include <array>
 #include <cassert>
@@ -78,6 +82,8 @@ static constexpr auto keywords = std::array{
     std::pair{           u8"type"sv,                TokenType::Type },
     std::pair{         u8"struct"sv,              TokenType::Struct },
     std::pair{     u8"restricted"sv,          TokenType::Restricted },
+    std::pair{          u8"print"sv,               TokenType::Print },
+    std::pair{        u8"println"sv,             TokenType::Println },
 };
 
 struct LexerState final {
@@ -182,7 +188,7 @@ public:
         return false;
     }
 
-    [[nodiscard]] Result<bool, LexerError> try_consume_multiline_comment() {
+    [[nodiscard]] bool try_consume_multiline_comment() {
         if (auto next = peek(); next and current() == '/' and *next == '*') {
             auto const starting_source_location = source_location_from_bytes(2);
             advance_bytes(2);
@@ -207,9 +213,7 @@ public:
                 advance_bytes();
             }
             if (is_end_of_file()) {
-                return Error{
-                    LexerError{ starting_source_location, ErrorCode::UnterminatedComment }
-                };
+                throw UnterminatedComment{ starting_source_location };
             }
             return true;
         }
@@ -268,36 +272,24 @@ public:
 };
 
 
-[[nodiscard]] Result<TokenVector, LexerError>
-tokenize(std::string_view const filename, std::u8string_view const source_code) {
+[[nodiscard]] TokenVector tokenize(std::string_view const filename, std::u8string_view const source_code) {
     assert(not source_code.empty() and source_code.back() == '\n');
 
     auto state = LexerState{ filename, source_code };
 
     while (not state.is_end_of_file()) {
         if (not state.current_is_valid_codepoint()) {
-            return Error{
-                LexerError{ state.source_location_from_bytes(), ErrorCode::InvalidInput }
-            };
+            throw InvalidUtf8Codepoint{ state.source_location_from_bytes() };
         }
 
         if (state.try_consume_whitespace() or state.try_consume_single_line_comment()
-            or state.try_consume_non_keyword_token() or state.try_consume_char_literal()
-            or state.try_consume_integer_literal() or state.try_consume_identifier_or_keyword()) {
+            or state.try_consume_multiline_comment() or state.try_consume_non_keyword_token()
+            or state.try_consume_char_literal() or state.try_consume_integer_literal()
+            or state.try_consume_identifier_or_keyword()) {
             continue;
         }
 
-        auto const multiline_comment_result = state.try_consume_multiline_comment();
-        if (not multiline_comment_result.has_value()) {
-            return Error{ multiline_comment_result.error() };
-        }
-        if (*multiline_comment_result) {
-            continue;
-        }
-
-        return Error{
-            LexerError{ state.source_location_from_codepoints(), ErrorCode::InvalidInput }
-        };
+        throw InvalidInput{ state.source_location_from_codepoints() };
     }
 
     return state.tokens_moved();
