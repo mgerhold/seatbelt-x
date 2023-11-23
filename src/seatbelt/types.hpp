@@ -24,5 +24,7 @@ using Error = tl::unexpected<E>;
 template<typename V>
 using Optional = tl::optional<V>;
 
+inline auto const& none = tl::nullopt;
+
 inline constexpr usize WordSize = 4;
 inline constexpr usize HalfwordSize = 2;

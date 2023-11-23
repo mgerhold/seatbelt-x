@@ -1,23 +1,22 @@
 #pragma once
+
 #include "../tokens.hpp"
 #include "expression.hpp"
-
-
 #include <memory>
+
+namespace expressions {
+    class U32Literal;
+}
 
 namespace expressions {
 
     class BasicExpression {
     public:
         virtual ~BasicExpression() = default;
-    };
 
-    class U32Literal final : public BasicExpression {
-    private:
-        Token m_token;
-
-    public:
-        explicit U32Literal(Token const& token) : m_token{ token } { }
+        [[nodiscard]] virtual Optional<U32Literal const&> as_u32_literal() const {
+            return none;
+        }
     };
 
     using Expression = std::unique_ptr<BasicExpression>;

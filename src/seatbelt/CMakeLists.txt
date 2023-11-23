@@ -20,6 +20,12 @@ add_library(seatbelt
         expressions/expression.hpp
         parser_error.hpp
         tokens.cpp
+        executor.hpp
+        interpreter/interpreter.cpp
+        interpreter/interpreter.hpp
+        statements/println.hpp
+        expressions/u32_literal.hpp
+        interpreter_error.hpp
 )
 
 target_link_libraries(seatbelt PRIVATE project_options)

@@ -1,9 +1,8 @@
 #include "parser.hpp"
-
+#include "expressions/u32_literal.hpp"
 #include "parser_error.hpp"
-#include "statements/statement.hpp"
+#include "statements/println.hpp"
 #include "tokens.hpp"
-
 #include <span>
 
 class ParserState final {
@@ -39,12 +38,12 @@ private:
     }
 
     [[nodiscard]] statements::Statement println() {
-        advance(); // consume "println"
+        auto println_token = advance();
         expect(TokenType::LeftParenthesis);
         auto expression = this->expression();
         expect(TokenType::RightParenthesis);
         expect(TokenType::Semicolon);
-        return std::make_unique<statements::Println>(std::move(expression));
+        return std::make_unique<statements::Println>(println_token, std::move(expression));
     }
 
     [[nodiscard]] expressions::Expression expression() {
