@@ -1,6 +1,6 @@
 name: C++ CI
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   build-linux:
@@ -41,9 +41,11 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
+      - name: Install Ninja
+        run: choco install ninja
+      - name: Install CMake
         run: choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System'
-      - name: Configure CMake with MSVC
-        run: cmake -B build -G "Visual Studio 17 2022"
-      - name: Build with MSVC
+      - name: Configure CMake with Ninja
+        run: cmake -B build -G "Ninja"
+      - name: Build with Ninja
         run: cmake --build build
