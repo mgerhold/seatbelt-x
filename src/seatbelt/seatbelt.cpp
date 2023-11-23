@@ -15,6 +15,8 @@ static void execute(std::vector<statements::Statement> const& statements, Execut
     for (auto const& statement : statements) {
         if (auto const& println = statement->as_println()) {
             executor.println(println.value());
+        } else if (auto const& print = statement->as_print()) {
+            executor.print(print.value());
         }
     }
 }

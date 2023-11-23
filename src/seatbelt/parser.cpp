@@ -1,8 +1,10 @@
 #include "parser.hpp"
 #include "expressions/u32_literal.hpp"
 #include "parser_error.hpp"
+#include "statements/print.hpp"
 #include "statements/println.hpp"
 #include "tokens.hpp"
+
 #include <span>
 
 class ParserState final {
@@ -30,11 +32,22 @@ public:
 private:
     statements::Statement statement() {
         switch (current().type) {
+            case TokenType::Print:
+                return print();
             case TokenType::Println:
                 return println();
             default:
-                throw std::runtime_error{ "replace me with a better exception type!" };
+                throw UnexpectedToken{ current(), TokenType::Println };
         }
+    }
+
+    [[nodiscard]] statements::Statement print() {
+        auto print_token = advance();
+        expect(TokenType::LeftParenthesis);
+        auto expression = this->expression();
+        expect(TokenType::RightParenthesis);
+        expect(TokenType::Semicolon);
+        return std::make_unique<statements::Print>(print_token, std::move(expression));
     }
 
     [[nodiscard]] statements::Statement println() {

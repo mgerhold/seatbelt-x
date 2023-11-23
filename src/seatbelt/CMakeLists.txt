@@ -26,6 +26,7 @@ add_library(seatbelt
         statements/println.hpp
         expressions/u32_literal.hpp
         interpreter_error.hpp
+        statements/print.hpp
 )
 
 target_link_libraries(seatbelt PRIVATE project_options)
