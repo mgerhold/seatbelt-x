@@ -7,7 +7,6 @@
 #include <array>
 #include <cassert>
 #include <ctre-unicode.hpp>
-#include <ranges>
 #include <utility>
 
 using namespace std::string_view_literals;

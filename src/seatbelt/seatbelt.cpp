@@ -1,6 +1,8 @@
 #include "include/seatbelt.hpp"
 #include "lexer.hpp"
 #include "lexer_error.hpp"
+#include "parser.hpp"
+#include "parser_error.hpp"
 
 #include <iostream>
 #include <magic_enum.hpp>
@@ -14,7 +16,13 @@ void compile(std::filesystem::path const& path) {
         for (auto const& token : tokens) {
             std::cout << magic_enum::enum_name(token.type) << " ('" << token.location.ascii_lexeme() << "')\n";
         }
+
+        auto const statements = parse(tokens);
     } catch (LexerError const& lexer_error) {
-        std::cerr << "lexer error: " << lexer_error.what() << '\n';
+        std::cerr << lexer_error.what() << '\n';
+    } catch (ParserError const& parser_error) {
+        std::cerr << parser_error.what() << '\n';
+    } catch (std::exception const& e) {
+        std::cerr << "unexpected error: " << e.what() << '\n';
     }
 }

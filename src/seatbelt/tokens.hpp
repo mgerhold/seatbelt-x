@@ -1,10 +1,7 @@
 #pragma once
 
 #include "source_location.hpp"
-#include "types.hpp"
 #include <string_view>
-#include <variant>
-#include <vector>
 
 enum class TokenType {
     And,
@@ -74,9 +71,13 @@ enum class TokenType {
     Println,
 };
 
+std::ostream& operator<<(std::ostream& os, TokenType type);
+
+template<>
+struct std::formatter<TokenType> : OStreamFormatter { };
+
 struct Token {
-    Token(SourceLocation const& location, const TokenType type)
-        : location{ location }, type{ type } {}
+    Token(SourceLocation const& location_, TokenType const type_) : location{ location_ }, type{ type_ } { }
 
     SourceLocation location;
     TokenType type;

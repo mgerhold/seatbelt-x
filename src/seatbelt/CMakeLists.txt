@@ -14,6 +14,12 @@ add_library(seatbelt
         utils.cpp
         lexer_error.hpp
         ostream_formatter.hpp
+        parser.cpp
+        parser.hpp
+        statements/statement.hpp
+        expressions/expression.hpp
+        parser_error.hpp
+        tokens.cpp
 )
 
 target_link_libraries(seatbelt PRIVATE project_options)
