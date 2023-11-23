@@ -51,6 +51,6 @@ jobs:
           toolset: 14.2  # Specify the Visual Studio/MSVC version here if necessary
           arch: x64
       - name: Configure CMake with Ninja and C++20
-        run: cmake -B build -G "Ninja" -DCMAKE_CXX_STANDARD=20
+        run: cmake -B build -G "Ninja"
       - name: Build with Ninja
         run: cmake --build build
