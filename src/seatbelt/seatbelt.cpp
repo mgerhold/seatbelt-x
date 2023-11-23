@@ -2,6 +2,7 @@
 
 #include "executor.hpp"
 #include "interpreter/interpreter.hpp"
+#include "interpreter_error.hpp"
 #include "lexer.hpp"
 #include "lexer_error.hpp"
 #include "parser.hpp"
@@ -34,6 +35,8 @@ void compile(std::filesystem::path const& path) {
         std::cerr << lexer_error.what() << '\n';
     } catch (ParserError const& parser_error) {
         std::cerr << parser_error.what() << '\n';
+    } catch (InterpreterError const& interpreter_error) {
+        std::cerr << interpreter_error.what() << '\n';
     } catch (std::exception const& e) {
         std::cerr << "unexpected error: " << e.what() << '\n';
     }
