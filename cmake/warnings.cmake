@@ -24,6 +24,8 @@ function(set_warnings target_name warnings_as_errors)
             /w14906 # string literal cast to 'LPWSTR'
             /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
             /permissive- # standards conformance mode for MSVC compiler.
+
+            /wd4458 # disable warning on shadowing since CTRE will not compile otherwise
     )
 
     set(clang_warnings

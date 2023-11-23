@@ -23,4 +23,7 @@ add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 include(cmake/lto.cmake)
 try_enable_link_time_optimizations()
 
+include(${CMAKE_SOURCE_DIR}/dependencies.cmake)
+setup_dependencies()
+
 add_subdirectory(src)
