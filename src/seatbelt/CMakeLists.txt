@@ -27,6 +27,18 @@ add_library(seatbelt
         expressions/u32_literal.hpp
         interpreter_error.hpp
         statements/print.hpp
+        compiler/compiler.cpp
+        compiler/compiler.hpp
+        compiler/string_constant_reference.hpp
+        compiler/function_call.hpp
+        compiler/function_declaration.hpp
+        compiler/data_type.hpp
+        compiler/context.hpp
+        compiler/function_call.cpp
+        compiler/function_declaration_reference.hpp
+        compiler/function_declaration_reference.cpp
+        compiler/value.hpp
+        compiler/u32_constant.hpp
 )
 
 target_link_libraries(seatbelt PRIVATE project_options)

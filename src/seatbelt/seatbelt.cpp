@@ -1,5 +1,6 @@
 #include "include/seatbelt.hpp"
 
+#include "compiler/compiler.hpp"
 #include "executor.hpp"
 #include "interpreter/interpreter.hpp"
 #include "interpreter_error.hpp"
@@ -33,13 +34,17 @@ void compile(std::filesystem::path const& path) {
         auto const statements = parse(tokens);
         auto executor = interpreter::Interpreter{};
         execute(statements, executor);
+
+        auto compiler = compiler::Compiler{};
+        execute(statements, compiler);
+        std::cout << compiler.emit();
     } catch (LexerError const& lexer_error) {
         std::cerr << lexer_error.what() << '\n';
     } catch (ParserError const& parser_error) {
         std::cerr << parser_error.what() << '\n';
     } catch (InterpreterError const& interpreter_error) {
         std::cerr << interpreter_error.what() << '\n';
-    } catch (std::exception const& e) {
+    } /*catch (std::exception const& e) {
         std::cerr << "unexpected error: " << e.what() << '\n';
-    }
+    }*/
 }
