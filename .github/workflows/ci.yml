@@ -48,7 +48,7 @@ jobs:
       - name: Set up Visual Studio Environment
         uses: ilammy/msvc-dev-cmd@v1
         with:
-          toolset: 14.2  # Specify the Visual Studio/MSVC version here if necessary
+          toolset: 14.29  # Specify the Visual Studio/MSVC version here if necessary
           arch: x64
       - name: Configure CMake with Ninja and C++20
         run: cmake -B build -G "Ninja"
