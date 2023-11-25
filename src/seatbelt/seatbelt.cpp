@@ -60,7 +60,7 @@ void compile(std::filesystem::path const& path) {
         std::cerr << parser_error.what() << '\n';
     } catch (InterpreterError const& interpreter_error) {
         std::cerr << interpreter_error.what() << '\n';
-    } /*catch (std::exception const& e) {
+    } catch (std::exception const& e) {
         std::cerr << "unexpected error: " << e.what() << '\n';
-    }*/
+    }
 }
