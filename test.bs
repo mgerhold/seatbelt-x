@@ -1,3 +1,4 @@
+println("\tHello, 🦀world!");
 println(42); // comment
 print(1);
 print(3);

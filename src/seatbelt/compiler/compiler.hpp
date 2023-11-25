@@ -4,6 +4,7 @@
 #include "context.hpp"
 #include "function_declaration.hpp"
 #include "function_declaration_reference.hpp"
+#include "string_constant.hpp"
 #include "string_constant_reference.hpp"
 #include "types.hpp"
 #include <string>
@@ -13,7 +14,7 @@ namespace compiler {
 
     class Compiler final : public Executor, public Context {
     private:
-        std::vector<std::string> m_string_constants;
+        std::vector<StringConstant> m_string_constants;
         std::vector<FunctionDeclaration> m_function_declarations;
         std::unordered_map<std::string, FunctionDeclarationReference> m_function_references;
         std::string m_main_body;

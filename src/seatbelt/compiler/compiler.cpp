@@ -1,11 +1,12 @@
 #include "compiler.hpp"
 
 
-#include "expressions/u32_literal.hpp"
+#include "../expressions/string_literal.hpp"
+#include "../expressions/u32_literal.hpp"
+#include "../statements/print.hpp"
+#include "../statements/println.hpp"
 #include "function_call.hpp"
 #include "interpreter_error.hpp"
-#include "statements/print.hpp"
-#include "statements/println.hpp"
 #include "u32_constant.hpp"
 
 #include <format>
@@ -34,13 +35,21 @@ namespace compiler {
     }
 
     void Compiler::println(statements::Println const& println) {
+        auto const& printf = m_function_references.at("printf");
         if (auto const& u32_literal = println.expression()->as_u32_literal()) {
             auto format_string = add_string_constant("%u%c");
-            auto const& printf = m_function_references.at("printf");
             auto arguments = std::vector<Value>{};
             arguments.push_back(std::move(format_string));
             arguments.push_back(std::make_unique<U32Constant>(utils::to_integer<u32>(std::string{
                     u32_literal.value().token().location.ascii_lexeme() })));
+            arguments.push_back(std::make_unique<U32Constant>('\n'));
+            m_main_body += std::format("  %{} = {}\n", next_id(), FunctionCall{ printf, std::move(arguments) });
+        } else if (auto const& string_literal = println.expression()->as_string_literal()) {
+            auto format_string = add_string_constant("%s%c");
+            auto string_constant = add_string_constant(utils::to_string_view(string_literal->unescaped()));
+            auto arguments = std::vector<Value>{};
+            arguments.push_back(std::move(format_string));
+            arguments.push_back(std::move(string_constant));
             arguments.push_back(std::make_unique<U32Constant>('\n'));
             m_main_body += std::format("  %{} = {}\n", next_id(), FunctionCall{ printf, std::move(arguments) });
         } else {
@@ -54,12 +63,12 @@ namespace compiler {
 
         // string constants
         for (usize i = 0; i < m_string_constants.size(); ++i) {
-            auto const& string = m_string_constants.at(i);
+            auto const& [string, length] = m_string_constants.at(i);
             result += std::format(
                     R"(@.str{} = private unnamed_addr constant [{} x i8] c"{}\00", align 1
 )",
                     i == 0 ? ""s : std::format(".{}", i),
-                    string.size() + 1,
+                    length + 1,
                     string
             );
         }
@@ -77,19 +86,22 @@ namespace compiler {
             result += std::format("{}\n", declaration);
         }
 
-        // attributes
-        result += R"(
-attributes #0 = { mustprogress noinline nounwind optnone uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
-attributes #1 = { nocallback nofree nosync nounwind speculatable willreturn memory(none) }
-)";
-
         return result;
     }
 
     [[nodiscard]] Value Compiler::add_string_constant(std::string_view const string) {
+        auto encoded = std::string{};
+        for (auto const c : string) {
+            if (std::isprint(static_cast<unsigned char>(c))) {
+                encoded += c;
+            } else {
+                encoded += std::format("\\{:02X}", static_cast<unsigned char>(c));
+            }
+        }
+
         auto const find_iterator =
                 std::find_if(std::cbegin(m_string_constants), std::cend(m_string_constants), [&](auto const& entry) {
-                    return entry == string;
+                    return entry.string == encoded;
                 });
         auto const found = (find_iterator != std::cend(m_string_constants));
         if (found) {
@@ -97,7 +109,7 @@ attributes #1 = { nocallback nofree nosync nounwind speculatable willreturn memo
                     gsl::narrow<usize>(std::distance(std::cbegin(m_string_constants), find_iterator))
             );
         }
-        m_string_constants.emplace_back(string);
+        m_string_constants.emplace_back(encoded, string.length());
         return std::make_unique<StringConstantReference>(m_string_constants.size() - 1);
     }
 

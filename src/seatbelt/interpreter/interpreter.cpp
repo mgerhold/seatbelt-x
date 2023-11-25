@@ -1,11 +1,11 @@
 #include "interpreter.hpp"
 
-#include "expressions/string_literal.hpp"
-#include "expressions/u32_literal.hpp"
+#include "../expressions/string_literal.hpp"
+#include "../expressions/u32_literal.hpp"
+#include "../statements/print.hpp"
+#include "../statements/println.hpp"
+#include "../statements/statement.hpp"
 #include "interpreter_error.hpp"
-#include "statements/print.hpp"
-#include "statements/println.hpp"
-#include "statements/statement.hpp"
 #include <iostream>
 
 static void print_implementation(expressions::Expression const& expression, Token print_token) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "executor.hpp"
+#include "../executor.hpp"
 
 namespace interpreter {
     class Interpreter final : public Executor {
