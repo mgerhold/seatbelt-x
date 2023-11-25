@@ -10,6 +10,14 @@ function(setup_dependencies)
             "UTF8PROC_INSTALL OFF"
     )
     CPMAddPackage(
+            NAME REPROC
+            GITHUB_REPOSITORY DaanDeMeyer/reproc
+            VERSION 14.2.4
+            OPTIONS
+            "REPROC++ ON"
+            "REPROC_MULTITHREADED OFF"
+    )
+    CPMAddPackage(
             NAME COMPILE_TIME_REGULAR_EXPRESSIONS
             GITHUB_REPOSITORY hanickadot/compile-time-regular-expressions
             VERSION 3.8.1

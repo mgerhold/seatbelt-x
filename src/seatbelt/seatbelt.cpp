@@ -8,9 +8,10 @@
 #include "lexer_error.hpp"
 #include "parser.hpp"
 #include "parser_error.hpp"
-
+#include <fstream>
 #include <iostream>
 #include <magic_enum.hpp>
+#include <reproc++/run.hpp>
 
 static void execute(std::vector<statements::Statement> const& statements, Executor& executor) {
     for (auto const& statement : statements) {
@@ -23,6 +24,7 @@ static void execute(std::vector<statements::Statement> const& statements, Execut
 }
 
 void compile(std::filesystem::path const& path) {
+    using namespace std::string_view_literals;
     auto const file = utils::read_text_file(path);
     assert(file.has_value());
     auto const filename = path.string();
@@ -37,7 +39,21 @@ void compile(std::filesystem::path const& path) {
 
         auto compiler = compiler::Compiler{};
         execute(statements, compiler);
-        std::cout << compiler.emit();
+        auto const llvm_ir = compiler.emit();
+        static constexpr auto out_filename = "test.ll";
+        {
+            auto out_file = std::ofstream{ out_filename };
+            out_file << llvm_ir;
+        }
+        static constexpr auto arguments =
+                std::array{ "clang"sv, "-Wno-override-module"sv, "-o"sv, "test.exe"sv, std::string_view{ out_filename } };
+        auto const&& [status, error_code] = reproc::run(arguments);
+        if (error_code) {
+            std::cerr << "invoking clang failed: process returned " << error_code.value() << '\n'
+                      << error_code.message() << '\n';
+        } else {
+            std::cout << "clang returned: " << status << '\n';
+        }
     } catch (LexerError const& lexer_error) {
         std::cerr << lexer_error.what() << '\n';
     } catch (ParserError const& parser_error) {
