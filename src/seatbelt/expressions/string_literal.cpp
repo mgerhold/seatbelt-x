@@ -68,7 +68,7 @@ namespace expressions {
                 [[maybe_unused]] auto const num_bytes_written = utf8proc_encode_char(codepoint, buffer.data());
                 assert(num_bytes_written == num_bytes_read);
                 for (auto i = decltype(num_bytes_read){ 0 }; i < num_bytes_read; ++i) {
-                    result += buffer.at(i);
+                    result += buffer.at(gsl::narrow<usize>(i));
                 }
             }
             current += num_bytes_read;
