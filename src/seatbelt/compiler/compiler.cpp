@@ -77,6 +77,12 @@ namespace compiler {
             result += std::format("{}\n", declaration);
         }
 
+        // attributes
+        result += R"(
+attributes #0 = { mustprogress noinline nounwind optnone uwtable "frame-pointer"="all" "min-legal-vector-width"="0" "no-trapping-math"="true" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+cmov,+cx8,+fxsr,+mmx,+sse,+sse2,+x87" "tune-cpu"="generic" }
+attributes #1 = { nocallback nofree nosync nounwind speculatable willreturn memory(none) }
+)";
+
         return result;
     }
 
