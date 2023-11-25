@@ -12,6 +12,7 @@ enum class TokenType {
     Break,
     CapitalizedFunction,
     CharLiteral,
+    StringLiteral,
     Colon,
     Comma,
     Const,
@@ -78,6 +79,10 @@ struct std::formatter<TokenType> : OStreamFormatter { };
 
 struct Token {
     Token(SourceLocation const& location_, TokenType const type_) : location{ location_ }, type{ type_ } { }
+
+    [[nodiscard]] std::u8string_view lexeme() const {
+        return location.lexeme();
+    }
 
     SourceLocation location;
     TokenType type;

@@ -1,4 +1,5 @@
 #include "parser.hpp"
+#include "expressions/string_literal.hpp"
 #include "expressions/u32_literal.hpp"
 #include "parser_error.hpp"
 #include "statements/print.hpp"
@@ -67,6 +68,8 @@ private:
         switch (current().type) {
             case TokenType::U32Literal:
                 return std::make_unique<expressions::U32Literal>(advance());
+            case TokenType::StringLiteral:
+                return std::make_unique<expressions::StringLiteral>(advance());
             default:
                 throw UnexpectedToken{ current(), TokenType::U32Literal };
         }

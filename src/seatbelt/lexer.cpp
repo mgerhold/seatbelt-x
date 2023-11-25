@@ -12,6 +12,7 @@
 using namespace std::string_view_literals;
 
 static constexpr char char_pattern[] = R"('(\\'|[ -\[\]-~]|\\[n\\tnvfr0])')";
+static constexpr char string_pattern[] = R"("(\\"|\\[\\tnvfr0]|[^\\"])*")";
 static constexpr char integer_pattern[] = "(0o([0-7]+_?)+)|(0x([\\dA-Fa-f]+_?)+)|(0b([01]+_?)+)|(\\d+_?)+";
 static constexpr char identifier_pattern[] = R"(\p{XID_Start}\p{XID_Continue}*)";
 
@@ -115,7 +116,6 @@ public:
     [[nodiscard]] bool is_end_of_file() const {
         return m_index >= m_source_code.length();
     }
-
 
     [[nodiscard]] auto filename() const {
         return m_filename;
@@ -242,7 +242,16 @@ public:
         return false;
     }
 
-    [[nodiscard]] bool try_consume_integer_literal() {
+    [[nodiscard]] bool try_consume_string_literal() {
+        if (auto const string_literal_result = ctre::starts_with<string_pattern>(view_from_current())) {
+            auto const length = string_literal_result.view().length();
+            push_token(TokenType::StringLiteral, length);
+            return true;
+        }
+        return false;
+    }
+
+    [[nodiscard]] bool try_consume_u32_literal() {
         if (auto const integer_literal_result = ctre::starts_with<integer_pattern>(view_from_current())) {
             auto const length = integer_literal_result.view().length();
             push_token(TokenType::U32Literal, length);
@@ -283,7 +292,8 @@ public:
 
         if (state.try_consume_whitespace() or state.try_consume_single_line_comment()
             or state.try_consume_multiline_comment() or state.try_consume_non_keyword_token()
-            or state.try_consume_char_literal() or state.try_consume_integer_literal()
+            or state.try_consume_char_literal() or state.try_consume_u32_literal()
+            or state.try_consume_string_literal()
             or state.try_consume_identifier_or_keyword()) {
             continue;
         }

@@ -43,9 +43,9 @@ namespace utils {
         auto codepoint = utf8proc_int32_t{};
 
         while (current < reinterpret_cast<utf8proc_uint8_t const*>(string.data() + string.length())) {
-            auto bytes_read = utf8proc_iterate(current, -1, &codepoint);
+            auto const bytes_read = utf8proc_iterate(current, -1, &codepoint);
             if (codepoint == -1) {
-                return Error<Utf8Error>{ Utf8Error::InvalidUtf8String };
+                return Error{ Utf8Error::InvalidUtf8String };
             }
             assert(utf8proc_codepoint_valid(codepoint));
             width += static_cast<usize>(utf8proc_charwidth(codepoint));

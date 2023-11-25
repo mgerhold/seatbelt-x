@@ -39,6 +39,8 @@ add_library(seatbelt
         compiler/function_declaration_reference.cpp
         compiler/value.hpp
         compiler/u32_constant.hpp
+        expressions/string_literal.hpp
+        expressions/string_literal.cpp
 )
 
 target_link_libraries(seatbelt PRIVATE project_options)
