@@ -12,12 +12,12 @@ namespace compiler {
     class FunctionCall final {
     private:
         FunctionDeclarationReference m_callee;
-        std::vector<Value> m_parameters;
+        std::vector<Value> m_arguments;
 
     public:
-        FunctionCall(FunctionDeclarationReference const callee, std::vector<Value> parameters)
+        FunctionCall(FunctionDeclarationReference const callee, std::vector<Value> arguments)
             : m_callee{ callee },
-              m_parameters{ std::move(parameters) } { }
+              m_arguments{ std::move(arguments) } { }
 
         friend std::ostream& operator<<(std::ostream& os, FunctionCall const& call);
     };

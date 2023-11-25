@@ -16,9 +16,9 @@ namespace compiler {
             os << "...";
         }
         os << ") @" << function.name() << "(";
-        for (usize i = 0; i < call.m_parameters.size(); ++i) {
-            os << call.m_parameters.at(i);
-            if (i < call.m_parameters.size() - 1) {
+        for (usize i = 0; i < call.m_arguments.size(); ++i) {
+            os << call.m_arguments.at(i);
+            if (i < call.m_arguments.size() - 1) {
                 os << ", ";
             }
         }
