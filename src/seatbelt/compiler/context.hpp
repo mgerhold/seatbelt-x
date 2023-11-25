@@ -8,8 +8,11 @@ namespace compiler {
     public:
         virtual ~Context() = default;
 
-        [[nodiscard]] virtual FunctionDeclaration const& retrieve_function(FunctionDeclarationReference const& reference
+        // clang-format off
+        [[nodiscard]] virtual FunctionDeclaration const& retrieve_function(
+            FunctionDeclarationReference const& reference
         ) const = 0;
+        // clang-format on
     };
 
 } // namespace compiler

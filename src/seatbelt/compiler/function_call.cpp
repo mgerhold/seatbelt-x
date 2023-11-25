@@ -2,6 +2,7 @@
 #include "function_declaration.hpp"
 
 namespace compiler {
+
     std::ostream& operator<<(std::ostream& os, FunctionCall const& call) {
         auto const& function = call.m_callee.dereference();
         os << "call " << function.return_type() << "(";
@@ -23,4 +24,5 @@ namespace compiler {
         }
         return os << ")";
     }
+
 } // namespace compiler

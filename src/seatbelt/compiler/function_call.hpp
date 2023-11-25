@@ -4,11 +4,11 @@
 #include "context.hpp"
 #include "function_declaration_reference.hpp"
 #include "value.hpp"
-
 #include <format>
 #include <iostream>
 
 namespace compiler {
+
     class FunctionCall final {
     private:
         FunctionDeclarationReference m_callee;
@@ -21,6 +21,7 @@ namespace compiler {
 
         friend std::ostream& operator<<(std::ostream& os, FunctionCall const& call);
     };
+
 } // namespace compiler
 
 template<>
