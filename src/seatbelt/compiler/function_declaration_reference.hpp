@@ -18,6 +18,7 @@ namespace compiler {
         FunctionDeclarationReference(usize const id, Context const* const context)
             : m_id{ id },
               m_context{ context } { }
+
         [[nodiscard]] FunctionDeclaration const& dereference() const;
     };
 
