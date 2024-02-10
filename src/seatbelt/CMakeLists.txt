@@ -56,7 +56,7 @@ target_link_system_libraries(seatbelt
         ctre::ctre
         magic_enum::magic_enum
         Microsoft.GSL::GSL
+        reproc++
         tl::expected
         tl::optional
-        reproc++
 )

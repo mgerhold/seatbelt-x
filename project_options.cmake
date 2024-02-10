@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 include(${CMAKE_SOURCE_DIR}/cmake/warnings.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/sanitizers.cmake)
 
@@ -21,10 +23,12 @@ if (PROJECT_IS_TOP_LEVEL)
     option(warnings_as_errors "Treat warnings as errors" ON)
     option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" ${supports_ubsan})
     option(enable_address_sanitizer "Enable address sanitizer" ${supports_asan})
+    option(seatbelt_x_build_tests "Build unit tests" ON)
 else ()
     option(warnings_as_errors "Treat warnings as errors" OFF)
     option(enable_undefined_behavior_sanitizer "Enable undefined behavior sanitizer" OFF)
     option(enable_address_sanitizer "Enable address sanitizer" OFF)
+    option(seatbelt_x_build_tests "Build unit tests" OFF)
 endif ()
 
 add_library(warnings INTERFACE)

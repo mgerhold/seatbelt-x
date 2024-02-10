@@ -34,8 +34,9 @@ jobs:
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/${{ matrix.cxx }} 100
           cmake -B build -G "Unix Makefiles"
       - name: Build
-        run: |
-          cmake --build build
+        run: cmake --build build
+      - name: Run Tests
+        run: ctest --verbose
 
   build-windows:
     runs-on: windows-latest
@@ -54,3 +55,5 @@ jobs:
         run: cmake -B build -G "Ninja" -DCMAKE_CXX_STANDARD=23
       - name: Build with Ninja
         run: cmake --build build
+      - name: Run Tests
+        run: ctest --verbose
