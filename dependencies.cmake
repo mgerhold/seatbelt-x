@@ -16,7 +16,12 @@ function(setup_dependencies)
             OPTIONS
             "REPROC++ ON"
             "REPROC_MULTITHREADED OFF"
+            "REPROC_WARNINGS OFF"
     )
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(reproc++ PRIVATE "-Wno-changes-meaning")
+    endif ()
+
     CPMAddPackage(
             NAME COMPILE_TIME_REGULAR_EXPRESSIONS
             GITHUB_REPOSITORY hanickadot/compile-time-regular-expressions

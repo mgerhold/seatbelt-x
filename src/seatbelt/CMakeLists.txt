@@ -50,10 +50,13 @@ target_include_directories(seatbelt
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_system_libraries(seatbelt PRIVATE utf8proc)
-target_link_system_libraries(seatbelt PRIVATE ctre::ctre)
-target_link_system_libraries(seatbelt PRIVATE magic_enum::magic_enum)
-target_link_system_libraries(seatbelt PRIVATE Microsoft.GSL::GSL)
-target_link_system_libraries(seatbelt PRIVATE tl::expected)
-target_link_system_libraries(seatbelt PRIVATE tl::optional)
-target_link_system_libraries(seatbelt PRIVATE reproc++)
+target_link_system_libraries(seatbelt
+        PRIVATE
+        utf8proc
+        ctre::ctre
+        magic_enum::magic_enum
+        Microsoft.GSL::GSL
+        tl::expected
+        tl::optional
+        reproc++
+)
