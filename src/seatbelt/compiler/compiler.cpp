@@ -37,20 +37,18 @@ namespace compiler {
     void Compiler::println(statements::Println const& println) {
         auto const& printf = m_function_references.at("printf");
         if (auto const& u32_literal = println.expression()->as_u32_literal()) {
-            auto format_string = add_string_constant("%u%c");
+            auto format_string = add_string_constant("%u\n");
             auto arguments = std::vector<Value>{};
             arguments.push_back(std::move(format_string));
             arguments.push_back(std::make_unique<U32Constant>(utils::to_integer<u32>(std::string{
                     u32_literal.value().token().location.ascii_lexeme() })));
-            arguments.push_back(std::make_unique<U32Constant>('\n'));
             m_main_body += std::format("  %{} = {}\n", next_id(), FunctionCall{ printf, std::move(arguments) });
         } else if (auto const& string_literal = println.expression()->as_string_literal()) {
-            auto format_string = add_string_constant("%s%c");
+            auto format_string = add_string_constant("%s\n");
             auto string_constant = add_string_constant(utils::to_string_view(string_literal->unescaped()));
             auto arguments = std::vector<Value>{};
             arguments.push_back(std::move(format_string));
             arguments.push_back(std::move(string_constant));
-            arguments.push_back(std::make_unique<U32Constant>('\n'));
             m_main_body += std::format("  %{} = {}\n", next_id(), FunctionCall{ printf, std::move(arguments) });
         } else {
             throw InvalidArgumentType{ println.token() };
