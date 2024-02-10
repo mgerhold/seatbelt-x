@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.26)
 project(seatbelt_x
         VERSION 0.0.1
         DESCRIPTION "the definitive Backseat compiler"
@@ -31,5 +31,6 @@ setup_dependencies()
 add_subdirectory(src bin)
 
 if (seatbelt_x_build_tests)
+    enable_testing()
     add_subdirectory(test)
 endif ()
