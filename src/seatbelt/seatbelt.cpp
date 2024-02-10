@@ -42,8 +42,8 @@ static void try_tokenize_parse_execute(std::filesystem::path const& path, Execut
     }
 }
 
-void interpret(std::filesystem::path const& path) {
-    auto interpreter = interpreter::Interpreter{};
+void interpret(std::filesystem::path const& path, std::ostream& std_out) {
+    auto interpreter = interpreter::Interpreter{ &std_out };
     try_tokenize_parse_execute(path, interpreter);
 }
 

@@ -3,5 +3,5 @@
 
 int main() {
     compile("test.bs");
-    interpret("test.bs");
+    interpret("test.bs", std::cout);
 }
