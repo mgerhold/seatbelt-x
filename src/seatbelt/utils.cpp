@@ -5,6 +5,22 @@
 
 namespace utils {
 
+    // clang-format off
+    [[nodiscard]] Result<void, IoError> write_text_file(
+        std::filesystem::path const& path,
+        std::string_view const contents
+    ) { // clang-format on
+        auto file = std::ofstream{ path };
+        if (not file) {
+            return Error<IoError>{ IoError::CouldNotOpenFile };
+        }
+        file << contents;
+        if (not file) {
+            return Error<IoError>{ IoError::UnableToWriteToFile };
+        }
+        return {};
+    }
+
     [[nodiscard]] Result<std::u8string, IoError> read_text_file(std::filesystem::path const& path) {
         // open file with file cursor at the end, binary to not have windows newlines replaced
         auto file = std::ifstream{ path, std::ios::in | std::ios::binary | std::ios::ate };

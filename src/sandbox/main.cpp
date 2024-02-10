@@ -3,4 +3,5 @@
 
 int main() {
     compile("test.bs");
+    interpret("test.bs");
 }

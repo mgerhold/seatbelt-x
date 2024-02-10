@@ -11,8 +11,10 @@ namespace utils {
         CouldNotOpenFile,
         UnableToReadFile,
         UnableToDetermineFileSize,
+        UnableToWriteToFile,
     };
 
+    [[nodiscard]] Result<void, IoError> write_text_file(std::filesystem::path const& path, std::string_view contents);
     [[nodiscard]] Result<std::u8string, IoError> read_text_file(std::filesystem::path const& path);
 
     enum class Utf8Error {
