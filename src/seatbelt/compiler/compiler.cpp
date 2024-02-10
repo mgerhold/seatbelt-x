@@ -92,7 +92,7 @@ namespace compiler {
     [[nodiscard]] Value Compiler::add_string_constant(std::string_view const string) {
         auto encoded = std::string{};
         for (auto const c : string) {
-            if (std::isprint(static_cast<unsigned char>(c))) {
+            if (std::isprint(static_cast<unsigned char>(c)) and c != '\\' and c != '"') {
                 encoded += c;
             } else {
                 encoded += std::format("\\{:02X}", static_cast<unsigned char>(c));
