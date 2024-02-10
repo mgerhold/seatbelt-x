@@ -9,9 +9,6 @@ namespace expressions {
     [[nodiscard]] std::u8string StringLiteral::unescaped() const {
         using namespace std::string_literals;
         assert(m_token.lexeme().size() >= 2); // includes at least two quotes
-        if (m_token.lexeme().size() < 4) {
-            return std::u8string{ m_token.lexeme() };
-        }
         assert(m_token.lexeme().front() == '"');
         assert(m_token.lexeme().back() == '"');
         auto result = u8""s;
